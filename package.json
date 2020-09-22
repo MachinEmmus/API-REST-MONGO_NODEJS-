@@ -4,6 +4,7 @@
   "description": "Project of API Retful with Node.js & MOngoDb",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon idex.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,10 @@
   },
   "homepage": "https://github.com/MachinEmmus/API-REST-MONGO_NODEJS-#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
