@@ -1,8 +1,8 @@
 'use strict'
 
 const express = require('express')
-
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -36,6 +36,13 @@ app.delete('/api/product/:productId', (req, res) => {
     
 })
 
-app.listen(port, () => {
-    console.log(`API REST corriendo en http://localhost:${port}`)
+mongoose.connect('mongodb://localhost:27017/shop', (err, res) =>{
+    if (err) {
+        console.log(`Error to conection with database .X. Error: ${err}`)
+    }
+    console.log('Connection to the database established ...')
+    app.listen(port, () => {
+        console.log(`API REST corriendo en http://localhost:${port}`)
+    })
 })
+
