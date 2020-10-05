@@ -18,11 +18,24 @@ app.use(bodyParser.json())
 })*/
 
 app.get('/api/product', (req, res) => {
-    res.status(200).send({products: []})
+    Product.find({}, (err, products) => {
+        if (err) return res.status(500).send({message: `Error al realizar la perición ${err}`})
+        if (!products) return res.status(404).send({message: `El producto no existe`})
+
+        res.status(200).send({products})
+    })
+    
 })
 
 app.get('/api/product/:productId', (req, res) => {
-    
+    let productId = req.params.productId
+
+    Product.findById(productId, (err, product) =>{
+        if (err) return res.status(500).send({message: `Error al realizar la petición ${err}`})
+        if (!product) return res.status(404).send({message: `El producto no existe`})
+
+        res.status(200).send({ product })
+    })
 })
 
 app.post('/api/product', (req, res) => {
@@ -44,18 +57,36 @@ app.post('/api/product', (req, res) => {
 })
 
 app.put('/api/product/:productId', (req, res) => {
-    
+    let productId = req.params.productId
+    let update = req.body
+
+    Product.findByIdAndUpdate(productId, update, (err, productUpdated) => {
+        if (err) res.status(500).send({message: `Error al actualizar el producto: ${err}`})
+
+        res.status(200).send({product: productUpdated})
+    })
 })
 
 app.delete('/api/product/:productId', (req, res) => {
-    
+    let productId = req.params.productId
+
+    Product.findById(productId, (err, product) =>{
+        if (err) return res.status(500).send({message: `Error al borrar el producto: ${err}`})
+
+        Product.remove(err =>{
+            if (err) return res.status(500).send({message: `Error al borrar el prodcto: ${err}`})
+            res.status(200).send({message: 'El producto ha sido eliminado'})
+        })
+    })
 })
 
 mongoose.connect('mongodb://localhost:27017/shop', (err, res) =>{
     if (err) {
         console.log(`Error to conection with database .X. Error: ${err}`)
+    } else {
+        console.log('Connection to the database established ...')
     }
-    console.log('Connection to the database established ...')
+    
     app.listen(port, () => {
         console.log(`API REST corriendo en http://localhost:${port}`)
     })
