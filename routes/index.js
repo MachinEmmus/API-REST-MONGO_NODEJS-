@@ -2,9 +2,10 @@
 
 const express = require('express')
 const ProductCtrl = require('../controllers/product')
+const userCtrl = require('../controllers/user')
 const auth = require('../middlewares/auth')
 const api = express.Router()
-const 
+
 
 // Example route
 /*app.get('/hello/:name', (req, res) => {
@@ -21,7 +22,11 @@ api.put('/product/:productId', ProductCtrl.updateProduct)
 
 api.delete('/product/:productId', ProductCtrl.deleteProduct)
 
-api.get('/private', auth.isAuth, function(req, res){
+api.post('/signup', userCtrl.signUp)
+
+api.post('/signin', userCtrl.signIn)
+
+api.get('/private', auth, function(req, res){
     res.status(200).send({mesagge: 'Tienes Acceso'})
 })
 

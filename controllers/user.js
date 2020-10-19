@@ -1,7 +1,7 @@
 'use strict'
 
-const moongose = require('mongoose')
 const User = require('../models/user')
+const service = require('../services')
 
 function signUp (req, res) {
     const user = new User({
@@ -15,7 +15,7 @@ function signUp (req, res) {
   
         return res.status(201).send({ token: service.createToken(user) })
     })
-  }
+}
   
 function signIn (req, res) {
     User.find({ email: req.body.email }, (err, user) => {
@@ -26,9 +26,9 @@ function signIn (req, res) {
         res.status(200).send({
         message: 'Te has logueado correctamente',
         token: service.createToken(user)
-      })
+        })
     })
-  }
+}
   
 module.exports = {
     signUp,
